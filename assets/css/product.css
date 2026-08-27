@@ -1,0 +1,257 @@
+/* ==========================================================================
+   DISTINCTION, SITE V4 · PRODUCT (PDP)
+   Loaded AFTER home.css. Reuses every home.css token, register and utility.
+   Adds only what a product page needs: gallery + sticky buy, spec tables,
+   big-number spec storytelling, glazing selector.
+   Aesthetic brief: Rimowa (gallery + sticky configurator, clean swatches)
+   crossed with Lexus (cinematic dark, proud oversized figures).
+   EB Garamond only. No !important. No CDN. Honours data-motion / reduced-motion.
+   ========================================================================== */
+
+/* ---------- BREADCRUMB --------------------------------------------------- */
+.crumbs {
+  padding-top: calc(var(--hdr-h) + 26px);
+  padding-bottom: 6px;
+}
+.crumbs ol {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  list-style: none;
+  font-size: var(--fs-label); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); font-variant-numeric: lining-nums;
+}
+.crumbs li { display: inline-flex; align-items: center; gap: 10px; }
+.crumbs li + li::before { content: "/"; color: var(--line-washi); letter-spacing: 0; }
+.crumbs a { color: var(--muted); transition: color .3s var(--ease); }
+.crumbs a:hover { color: var(--gold-ink); }
+.crumbs [aria-current] { color: var(--sumi); }
+
+/* ---------- PDP LAYOUT: GALLERY + STICKY BUY ----------------------------- */
+.pdp { padding-block: clamp(20px, 3vw, 40px) var(--sec); }
+.pdp__grid { display: grid; gap: clamp(34px, 5vw, 72px); align-items: start; }
+@media (min-width: 960px) {
+  .pdp__grid { grid-template-columns: minmax(0, 1fr) minmax(360px, 430px); }
+}
+
+/* --- gallery (left) --- */
+.gal__stage { position: relative; }
+.gal__main { background: #F7F1E4; }          /* studio product-on-white, per .slot--fit intent */
+.gal__badge {
+  position: absolute; top: 20px; left: 20px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 9px 16px; background: var(--night); color: var(--on-night);
+  font-size: var(--fs-label); letter-spacing: .22em; text-transform: uppercase;
+  font-variant-numeric: lining-nums;
+}
+.gal__thumbs {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: clamp(10px, 1.4vw, 16px); margin-top: clamp(12px, 1.6vw, 18px);
+}
+.thumb {
+  position: relative; background: #F7F1E4; border: 1px solid var(--line-washi);
+  padding: 0; overflow: hidden; aspect-ratio: 1 / 1;
+  transition: border-color .35s var(--ease);
+}
+.thumb img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+.thumb::after {
+  content: ""; position: absolute; inset: 0;
+  border: 1px solid transparent; transition: border-color .35s var(--ease);
+}
+.thumb:hover { border-color: var(--muted); }
+.thumb[aria-pressed="true"]::after { border-color: var(--gold-ink); }
+.thumb[aria-pressed="true"] { border-color: var(--gold-ink); }
+.thumb__cap {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 6px 8px; text-align: center;
+  font-size: .58rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--muted); background: linear-gradient(180deg, transparent, rgba(245,243,238,.9));
+  font-variant-numeric: lining-nums;
+}
+
+/* --- buy panel (right, sticky) --- */
+@media (min-width: 960px) {
+  .buy { position: sticky; top: calc(var(--hdr-h) + 24px); }
+}
+.buy__cat {
+  font-size: var(--fs-label); font-weight: 500; letter-spacing: .24em;
+  text-transform: uppercase; color: var(--gold-ink); font-variant-numeric: lining-nums;
+}
+.buy__title { font-size: clamp(1.9rem, 3.4vw, 2.9rem); line-height: 1.08; margin: 16px 0 14px; letter-spacing: -.012em; }
+.buy__voice { font-style: italic; font-size: var(--fs-lead); line-height: 1.5; color: var(--muted); max-width: 28em; }
+
+/* at-a-glance stat row under the title */
+.glance {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1px; margin: 26px 0 30px;
+  background: var(--line-washi); border: 1px solid var(--line-washi);
+}
+.glance__i { background: var(--washi); padding: 14px 16px; }
+.glance__v { font-size: 1.5rem; line-height: 1; color: var(--sumi); font-variant-numeric: lining-nums tabular-nums; letter-spacing: .01em; }
+.glance__k { display: block; margin-top: 7px; font-size: var(--fs-label); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); font-variant-numeric: lining-nums; }
+
+/* configurator option groups */
+.opt { margin-bottom: 22px; }
+.opt__head { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; margin-bottom: 12px; }
+.opt__label { font-size: var(--fs-label); font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); font-variant-numeric: lining-nums; }
+.opt__value { font-size: var(--fs-small); color: var(--sumi); font-style: italic; }
+.opt__row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.chip {
+  flex: 0 1 auto; min-width: 0;
+  padding: 12px 18px; border: 1px solid var(--line-washi); background: var(--washi);
+  font-size: var(--fs-small); color: var(--sumi);
+  font-variant-numeric: lining-nums tabular-nums;
+  transition: border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
+}
+.chip:hover { border-color: var(--muted); }
+.chip[aria-pressed="true"] { border-color: var(--sumi); background: var(--sumi); color: var(--washi); }
+.chip[disabled] { cursor: default; opacity: 1; border-style: dashed; color: var(--muted); }
+.chip small { display: block; font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: inherit; opacity: .7; margin-top: 3px; }
+
+/* finish swatch (single, White) */
+.fin { display: inline-flex; align-items: center; gap: 12px; padding: 8px 14px 8px 8px; border: 1px solid var(--sumi); }
+.fin__dot { width: 26px; height: 26px; border-radius: 50%; background: #FFFFFF; border: 1px solid var(--line-washi); }
+.fin__name { font-size: var(--fs-small); }
+
+/* colour-swatch selector (entry doors: multiple finishes) */
+.swatchrow { display: flex; flex-wrap: wrap; gap: 10px; }
+.swatch {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 9px;
+  min-width: 66px; padding: 10px 8px; background: var(--washi); border: 1px solid var(--line-washi);
+  transition: border-color .3s var(--ease);
+}
+.swatch:hover { border-color: var(--muted); }
+.swatch[aria-pressed="true"] { border-color: var(--sumi); }
+.swatch__dot { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line-washi); }
+.swatch__name { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-variant-numeric: lining-nums; }
+.swatch[aria-pressed="true"] .swatch__name { color: var(--sumi); }
+.dot-white     { background: #FFFFFF; }
+.dot-oak       { background: #9A6B3F; }
+.dot-light-oak { background: #C79A62; }
+.dot-black     { background: #22262A; }
+.dot-walnut    { background: #4A3527; }
+
+/* pending-data callout (entry pages, until official specs land) */
+.pending {
+  margin-bottom: 30px; padding: 15px 18px;
+  border: 1px solid var(--line-washi); border-left: 2px solid var(--gold-ink);
+  background: var(--washi-deep);
+  font-size: var(--fs-small); font-style: italic; color: var(--muted); max-width: 60em;
+}
+.pending--night { background: var(--night-raised); border-color: var(--line-night); border-left-color: var(--gold); color: var(--on-night-muted); }
+
+/* purchase action block */
+.buy__act { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--line-washi); }
+.buy__avail { font-size: var(--fs-small); color: var(--muted); margin-bottom: 16px; font-style: italic; }
+.buy__cta { display: block; width: 100%; text-align: center; padding: 19px 24px; }
+.buy__second {
+  display: inline-flex; align-items: center; gap: 12px; margin-top: 18px;
+  font-size: var(--fs-label); letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold-ink); border-bottom: 1px solid currentColor; padding-bottom: 6px;
+  transition: gap .35s var(--ease);
+}
+.buy__second:hover { gap: 20px; }
+
+.assurmini { display: grid; gap: 12px; margin-top: 28px; }
+.assurmini li { display: flex; gap: 12px; align-items: flex-start; font-size: var(--fs-small); color: var(--muted); max-width: none; }
+.assurmini svg { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 4px; stroke: var(--gold-ink); }
+.assurmini b { color: var(--sumi); font-weight: 500; }
+
+/* ---------- CINEMATIC FULL-BLEED SCENE (Lexus moment) ------------------- */
+.scene { position: relative; min-height: 78vh; display: flex; align-items: flex-end; isolation: isolate; background: var(--night); }
+.scene__media { position: absolute; inset: 0; z-index: -2; }
+.scene__media img { width: 100%; height: 100%; object-fit: cover; }
+.scene::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(16,11,3,.22) 0%, rgba(16,11,3,.14) 40%, rgba(16,11,3,.78) 100%),
+    linear-gradient(90deg, rgba(16,11,3,.46) 0%, rgba(16,11,3,.10) 58%, rgba(16,11,3,0) 84%);
+}
+.scene__in { padding: clamp(40px, 8vw, 110px) var(--gutter); max-width: var(--maxw); margin-inline: auto; width: 100%; }
+.scene .label { color: rgba(245,243,238,.86); }
+.scene__h { color: var(--on-night); font-size: var(--fs-h2); max-width: 18ch; margin: 18px 0 0; }
+.scene__note { color: rgba(245,243,238,.8); font-style: italic; font-size: var(--fs-lead); margin-top: 20px; max-width: 30em; }
+
+/* ---------- BY THE NUMBERS (Lexus proud figures) ----------------------- */
+.numbers { display: grid; gap: 40px 34px; }
+@media (min-width: 640px) { .numbers { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 980px) { .numbers { grid-template-columns: repeat(4, 1fr); } }
+.fig { padding-top: 24px; border-top: 1px solid var(--line-night); }
+.fig__v {
+  font-size: clamp(3.2rem, 6vw, 5rem); line-height: .92; color: var(--on-night);
+  font-variant-numeric: lining-nums tabular-nums; letter-spacing: -.02em;
+}
+.fig__u { font-size: .42em; color: var(--gold); letter-spacing: .02em; margin-left: .12em; }
+.fig__k { display: block; margin-top: 16px; font-size: var(--fs-label); letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-variant-numeric: lining-nums; }
+.fig__p { margin-top: 12px; font-size: var(--fs-small); color: var(--on-night-muted); max-width: 22em; }
+
+/* ---------- WAYS TO GLAZE (variant showcase, 3 or 4 styles) ------------ */
+.glaze { display: grid; gap: clamp(18px, 2.4vw, 30px); grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.glaze__card { text-align: left; }
+.glaze__fig { background: #F7F1E4; border: 1px solid var(--line-washi); }
+.glaze__fig img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; padding: clamp(14px, 3vw, 30px); }
+.glaze__name { font-size: var(--fs-h3); font-weight: 500; margin-top: 18px; }
+.glaze__p { font-size: var(--fs-small); color: var(--muted); margin-top: 8px; }
+
+/* ---------- WHAT ARRIVES ------------------------------------------------ */
+.handing-fig { aspect-ratio: 249 / 277; max-width: 340px; }
+.arrive__grid { display: grid; gap: clamp(30px, 5vw, 72px); align-items: center; }
+@media (min-width: 900px) { .arrive__grid { grid-template-columns: 0.85fr 1fr; } }
+.crate { display: grid; gap: 0; margin-top: 30px; }
+.crate li { display: flex; gap: 16px; align-items: baseline; padding: 16px 0; border-top: 1px solid var(--line-washi); max-width: none; }
+.crate li:last-child { border-bottom: 1px solid var(--line-washi); }
+.crate__i { flex: 0 0 auto; font-size: var(--fs-label); letter-spacing: .16em; color: var(--gold-ink); font-variant-numeric: lining-nums; padding-top: 3px; }
+.crate__t b { font-weight: 500; color: var(--sumi); }
+.crate__t span { color: var(--muted); }
+.crate__excl { margin-top: 22px; font-size: var(--fs-small); font-style: italic; color: var(--muted); }
+
+/* ---------- SPEC TABLES (elegant, Lexus) ------------------------------- */
+.specset { display: grid; gap: clamp(40px, 5vw, 64px); }
+@media (min-width: 820px) { .specset { grid-template-columns: repeat(2, 1fr); } }
+.specblock h3 { margin-bottom: 6px; }
+.specblock .hair { margin-bottom: 18px; }
+.dl { border-top: 1px solid var(--line-washi); }
+.dl__row { display: grid; grid-template-columns: 1fr auto; gap: 20px 24px; align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--line-washi); }
+.dl__k { font-size: var(--fs-small); color: var(--muted); }
+.dl__v { font-size: var(--fs-small); color: var(--sumi); text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.dl__v b { font-weight: 500; }
+.dl sup { font-variant-numeric: lining-nums; font-size: .7em; color: var(--gold-ink); }
+
+/* ---------- WARRANTY TABLE --------------------------------------------- */
+.warr { border-top: 1px solid var(--line-night); }
+.warr__row { display: grid; grid-template-columns: 1fr auto; gap: 18px 28px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--line-night); }
+.warr__k { color: var(--on-night); font-size: var(--fs-body); }
+.warr__v { color: var(--on-night-muted); font-size: var(--fs-small); text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.warr__v b { color: var(--gold); font-weight: 500; }
+.warr__note { margin-top: 26px; font-size: var(--fs-small); font-style: italic; color: var(--on-night-muted); max-width: 40em; }
+.sup-gold { color: var(--gold); font-variant-numeric: lining-nums; font-size: .7em; }
+
+/* ---------- CATEGORY GRID (Rimowa-style product grid) ------------------ */
+.catgrid { display: grid; gap: clamp(28px, 3.4vw, 52px) clamp(18px, 2vw, 30px); grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.catgrid .card__fig { margin-bottom: 18px; }
+.catcount { font-size: var(--fs-label); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); font-variant-numeric: lining-nums; }
+
+/* category intro band over a cinematic scene */
+.cathero { position: relative; min-height: 62vh; display: flex; align-items: flex-end; isolation: isolate; background: var(--night); }
+.cathero__media { position: absolute; inset: 0; z-index: -2; }
+.cathero__media img { width: 100%; height: 100%; object-fit: cover; }
+.cathero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  /* Two scrims: one bottom-heavy for the headline block, one from the left
+     so the copy holds against bright daylight photography. */
+  background:
+    linear-gradient(180deg, rgba(16,11,3,.30) 0%, rgba(16,11,3,.24) 34%, rgba(16,11,3,.84) 100%),
+    linear-gradient(90deg, rgba(16,11,3,.58) 0%, rgba(16,11,3,.20) 56%, rgba(16,11,3,0) 82%),
+    /* flat wash: the daylight photography needs a floor under the headline
+       at every viewport, not only where the two gradients overlap. */
+    linear-gradient(rgba(16,11,3,.34), rgba(16,11,3,.34));
+}
+.cathero__in { padding: calc(var(--hdr-h) + 40px) var(--gutter) clamp(40px, 6vw, 80px); max-width: var(--maxw); margin-inline: auto; width: 100%; }
+.cathero__in h1 { color: var(--on-night); font-size: var(--fs-hero); line-height: 1.04; letter-spacing: -.015em; max-width: 16ch; margin-top: 18px; }
+.cathero .label { color: rgba(245,243,238,.86); }
+.cathero__lead { color: rgba(245,243,238,.82); font-size: var(--fs-lead); font-style: italic; margin-top: 22px; max-width: 34em; }
+
+/* ---------- FOOTNOTES --------------------------------------------------- */
+.notes { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line-washi); }
+.notes li { font-size: var(--fs-small); color: var(--muted); max-width: 62em; margin-bottom: 10px; padding-left: 24px; position: relative; }
+.notes li b { color: var(--sumi); font-weight: 500; }
+.notes__n { position: absolute; left: 0; top: 0; color: var(--gold-ink); font-variant-numeric: lining-nums; }

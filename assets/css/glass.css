@@ -1,0 +1,163 @@
+/* ══════════════════════════════════════════════════════════════
+   GLASS PANEL — alternative treatment for the Categories bands
+   ──────────────────────────────────────────────────────────────
+   Loaded AFTER styles.css, and only by index-glass.html. It adds a
+   single new element — .cat__glass — around the copy inside each
+   full-bleed plate and overrides nothing else, so index.html and
+   index-glass.html are a clean A/B of exactly one change.
+
+   The file is entirely palette-driven: --paper-rgb, --glow-rgb and
+   --cat-ink all come from the colourway's :root, so this file is
+   byte-identical in grand-seiko-golden-yellow and grand-seiko-blue.
+   Diff them to confirm — any difference is a mistake.
+   ══════════════════════════════════════════════════════════════ */
+
+.cat{
+  /* ── Panel tuning knobs ──────────────────────────────────────
+     These sit alongside --cat-gap and --cat-shade in styles.css.
+     Change them here; nothing else needs to move.
+
+     --glass-tint  how milky the pane is. 0 = pure blur with no
+                   white lift, .20 = frosted. Above ~.24 the
+                   photograph behind stops reading.
+     --glass-blur  how hard the pane frosts what is behind it.
+                   Small values look like a smudge; go 12px+.
+     --glass-edge  brightness of the hairline border that draws
+                   the pane's outline.
+     --glass-glow  master strength of the bloom. Every glow layer
+                   below is multiplied by it, so this one number
+                   takes the panel from "faintly lit" (.4) through
+                   the default (1) to "showroom sign" (1.6). 0
+                   kills the glow and leaves a plain frosted pane.
+     --glass-max   the pane's maximum width. It shrink-wraps the
+                   copy, so this only bites on the Entry plate,
+                   whose four buttons are the widest row. */
+  --glass-tint:.10;
+  --glass-blur:16px;
+  --glass-edge:.52;
+  --glass-glow:1;
+  --glass-max:640px;
+}
+
+/* The pane. .cat__blk is text-align:center, so an inline-flex box
+   centres itself with no extra machinery. */
+.cat__glass{
+  position:relative;
+  display:inline-flex;flex-direction:column;align-items:center;
+  /* A definite width, not shrink-to-fit. Previously the pane sized itself to
+     its widest child, which was the button row, so the two plates came out
+     different widths and the Entry row ran edge to edge inside its pane. */
+  width:min(100%,var(--glass-max));
+  padding:clamp(38px,4.6vw,62px) clamp(30px,4.6vw,72px);
+
+  /* A pane is not a flat wash: the sheen runs top-left to
+     bottom-right so the block reads as a sheet catching light
+     rather than a grey rectangle. */
+  background:
+    linear-gradient(145deg,
+      rgba(var(--paper-rgb),calc(var(--glass-tint) * 1.9)) 0%,
+      rgba(var(--paper-rgb),var(--glass-tint)) 42%,
+      rgba(var(--paper-rgb),calc(var(--glass-tint) * .55)) 100%);
+
+  backdrop-filter:blur(var(--glass-blur)) saturate(122%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(122%);
+
+  border:1px solid rgba(var(--paper-rgb),var(--glass-edge));
+  /* Near-square. The page's language is hairline rules and right
+     angles, so a large radius would read as a different product. */
+  border-radius:3px;
+
+  box-shadow:
+    /* the pane sitting off the photograph */
+    0 26px 70px rgba(var(--cat-ink),.42),
+    /* a lit top lip and a shaded bottom, so it has thickness */
+    inset 0 1px 0 rgba(var(--paper-rgb),.42),
+    inset 0 -1px 0 rgba(var(--cat-ink),.22),
+    /* light pooling inwards from the edge — this is what stops the
+       pane reading as a flat grey card once the bloom is behind it */
+    inset 0 0 clamp(26px,3vw,44px) rgba(var(--glow-rgb),calc(var(--glass-glow) * .30)),
+    inset 0 0 0 1px rgba(var(--paper-rgb),.14);
+}
+
+/* The bloom. It lives on ::before rather than in the box-shadow
+   above so it can be animated on its own opacity — animating a
+   multi-layer box-shadow forces a repaint of the whole pane every
+   frame. inset:-1px keeps the halo just outside the border box;
+   an outer box-shadow never paints inside its own box, so the
+   frosted interior stays clean. */
+.cat__glass::before{
+  content:"";position:absolute;inset:-1px;
+  border-radius:inherit;pointer-events:none;
+  box-shadow:
+    /* 1. a crisp near-white rim. Both colourways' --glow-rgb sits in
+          the same hue family as their own photography, so an accent
+          glow alone vanishes into the plate. This paper-coloured
+          hairline is what actually reads as "lit" on either page. */
+    0 0 2px rgba(var(--paper-rgb),calc(var(--glass-glow) * .85)),
+    0 0 9px rgba(var(--paper-rgb),calc(var(--glass-glow) * .38)),
+    /* 2. a tight accent halo hugging the rim — this carries the
+          colourway: amber on the golden page, azure on the blue. */
+    0 0 clamp(16px,1.9vw,28px) rgba(var(--glow-rgb),calc(var(--glass-glow) * .95)),
+    /* 3. a wide, soft bloom that lifts the photograph around the
+          panel so the pane looks like a light source, not a sticker */
+    0 0 clamp(46px,6vw,92px) rgba(var(--glow-rgb),calc(var(--glass-glow) * .55)),
+    0 0 clamp(90px,12vw,190px) rgba(var(--glow-rgb),calc(var(--glass-glow) * .26));
+}
+
+/* A slow breath, so the panel reads as lit rather than printed.
+   Gated on .no-motion, the page's own reduce-animations toggle. */
+body:not(.no-motion) .cat__glass::before{
+  animation:catGlassBreathe 7.5s ease-in-out infinite;
+}
+@keyframes catGlassBreathe{
+  0%,100%{opacity:.78}
+  50%{opacity:1}
+}
+
+/* With a pane behind it the copy no longer needs a heavy halo to
+   survive the photograph — the shadows in styles.css were sized
+   for bare glass-less text and go muddy here. Pulled back, not
+   removed: the pane is translucent, so a little lift still helps. */
+.cat__glass .cat__h{text-shadow:0 1px 14px rgba(var(--cat-ink),.34)}
+.cat__glass .cat__sub{text-shadow:0 1px 10px rgba(var(--cat-ink),.32)}
+
+/* .cat__in's own padding already holds the pane off the band
+   edges, so the pane only needs to lose the doubled inset. */
+.cat__glass .cat__cta{
+  margin-top:var(--cat-gap);
+  /* Equal columns rather than a flex row. The four Entry labels differ in
+     length, so a flex row set them at four different widths and wrapped
+     three plus one at tablet sizes. A two column grid gives one centred,
+     evenly weighted block at every width, and the Patio plate's two
+     buttons land side by side in the same rhythm. */
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  justify-items:stretch;
+}
+/* Below this the two columns are narrower than the longest label, so the
+   text would wrap and leave one row taller than the other. One column
+   instead, still equal width and still centred. */
+@media (max-width:520px){
+  .cat__glass .cat__cta{grid-template-columns:1fr}
+}
+
+@media (max-width:720px){
+  .cat{--glass-blur:12px}
+  .cat__glass{padding:clamp(30px,7vw,44px) clamp(22px,6vw,34px)}
+}
+
+/* Safari and Firefox with backdrop-filter disabled fall through to
+   a flat tint, which on a bright photograph is not enough contrast
+   on its own. Lean on the tint harder when there is no blur. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .cat__glass{
+    background:linear-gradient(145deg,
+      rgba(var(--cat-ink),.50) 0%,
+      rgba(var(--cat-ink),.40) 100%);
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cat__glass::before{animation:none;opacity:.85}
+}
