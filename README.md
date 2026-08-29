@@ -5,7 +5,7 @@ manager. Every page is hand maintained and can be opened, edited and deployed
 as it stands.
 
 - 27 pages
-- 12 entry door styles, 5 patio doors, across 2 sub categories
+- 10 entry door styles, 5 patio doors, across 2 sub categories
 - Metadata to `site-v4-metadata-2026-08-27` v3.0: titles, descriptions, robots,
   canonicals, Open Graph, Schema.org in JSON-LD, and Dublin Core
 - Sold through The Home Depot; every "Where to buy" link points there
@@ -64,8 +64,8 @@ verifies none were left behind.
 ```
 .
 ├── index.html                          Homepage
-├── entry-doors.html                    Entry landing, 12 styles
-├── entry-*.html                        12 entry product pages
+├── entry-doors.html                    Entry landing, 10 styles
+├── entry-*.html                        10 entry product pages
 ├── patio-doors.html                    Patio landing
 ├── patio-gliding.html                  Gliding sub category
 ├── patio-hinged.html                   Hinged sub category

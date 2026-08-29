@@ -1,11 +1,4 @@
+# STAGING BUILD. Not for indexing.
+# Restore the production file with:  python3 set-host.py <host> --production
 User-agent: *
-Allow: /
-Disallow: /assets/product/diagram/
-Disallow: /*?utm_
-
-Sitemap: https://www.mpdoors.com/sitemap.xml
-
-# AI and LLM crawlers are deliberately not blocked. MP Doors sells through one
-# retailer and competes on being findable, and every fact on this site is
-# already public on homedepot.com. See spec file 04 for the levers if that
-# position changes.
+Disallow: /

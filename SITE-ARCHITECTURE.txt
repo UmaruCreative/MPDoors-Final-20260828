@@ -34,12 +34,10 @@ Home  (/)                                                          index.html
 │   │   ├── 3/4 Lite                                      entry-3-4-lite.html
 │   │   ├── 4 Lite                                          entry-4-lite.html
 │   │   ├── Full Lite                                    entry-full-lite.html
-│   │   ├── Fan Lite                                      entry-fan-lite.html
 │   │   ├── Narrow Lite                                entry-narrow-lite.html
 │   │   ├── Contemporary Teak                   entry-contemporary-teak.html
 │   │   ├── Craftsman                                    entry-craftsman.html
 │   │   ├── Modern Full Lite                     entry-modern-full-lite.html
-│   │   ├── Prestige Oval Lite                 entry-prestige-oval-lite.html
 │   │   └── 3/4 Oval Lite                            entry-3-4-oval-lite.html
 │   │
 │   └── Patio Doors  (/patio-doors/)                          patio-doors.html
@@ -133,8 +131,8 @@ its own file and point the index card links at it; nothing else changes.
 
 MP-Doors-Website/
 ├── index.html                    Master homepage (from index-glass.html)
-├── entry-doors.html              Entry landing, 12 styles
-├── entry-*.html                  12 entry product pages
+├── entry-doors.html              Entry landing, 10 styles
+├── entry-*.html                  10 entry product pages
 ├── patio-doors.html              Patio landing
 ├── patio-gliding.html            Gliding sub-category landing
 ├── patio-hinged.html             Hinged sub-category landing
@@ -165,7 +163,7 @@ MP-Doors-Website/
     │   ├── A_Gliding-sunset-16-9.png     RETAINED golden-yellow scene render
     │   ├── A_Welcome-home-scene-16-9.png RETAINED golden-yellow scene render
     │   └── themes/golden-yellow/         RETAINED golden-yellow door renders
-    │       ├── entry-prestige-oval.png
+    │       ├── Craftsman-Medium-Oak-Golden-yellow.png
     │       ├── entry-modern-narrow-lite.png
     │       └── patio-gliding.png
     ├── product/
@@ -575,5 +573,90 @@ THE ONE DECISION LEFT
   URLs that do not resolve. Either use a rewriting host, change the canonicals
   to the .html form, or restructure each page into its own directory as
   index.html. See section 1 for the full URL map.
+
+==============================================================================
+
+==============================================================================
+11 . PRODUCT WITHDRAWAL AND FOUNDING YEAR  (28 August 2026)
+==============================================================================
+
+FOUNDING YEAR
+  Every reference to 1999 was changed to 2004, 57 in all, across 27 pages plus
+  llms.txt and this file. The claims that were derived from the old year moved
+  with it, because 2004 to 2026 is twenty two years, not twenty five:
+    "A quarter century of building fiberglass ..."   -> "Two decades of ..."
+    "One frame, refined for a quarter century"       -> "... for two decades"
+    "refined across more than twenty five years"     -> "... twenty years"
+    "built in the United States for over 25 years"   -> "... over 20 years"
+  No title or meta description carried the year, so no metadata character
+  counts changed.
+
+PRODUCTS WITHDRAWN
+  Fan Lite Entry Door and Prestige Oval Lite Entry Door are removed from the
+  site entirely. Both were already held at noindex on the evidence in metadata
+  spec file 04, which recorded 62 of 63 Fan Lite items and all 18 Prestige Oval
+  Lite items as discontinued in the THD item table. This completes that.
+
+  Pages deleted        entry-fan-lite.html
+                       entry-prestige-oval-lite.html
+  Assets deleted       12 files, 2.2 MB: both product images, their glass
+                       variants, and both Open Graph cards
+  References removed   99 navigation and mobile menu links across 25 pages,
+                       and the two cards in the Entry Doors category grid
+  Counts corrected     Entry styles 12 -> 10, in the entry-doors title, meta
+                       description, Open Graph, Twitter, Dublin Core, JSON-LD,
+                       page copy and category count, plus the homepage
+                       subtitle and button, the 404 page, README and this file
+
+  Sitemap needed no change: both pages were already excluded because they
+  carried noindex.
+
+  Two homepage links pointed at the retired Prestige Oval Lite and were
+  repointed to 3/4 Oval Lite, the surviving oval decorative door: the Entry
+  plate's "Decorative Oval" button, and the first signature rail card, which
+  was relabelled to match. The golden yellow render is retained and its alt
+  text no longer names a product that is not sold.
+
+  Also corrected while in the file: the alt text on the four narrative chapter
+  images was one image out of step with the images themselves, from an earlier
+  pass. All ten themed images now carry alt text describing the image shown.
+
+==============================================================================
+
+==============================================================================
+12 . GOLDEN YELLOW RENDER SWAP  (28 August 2026)
+==============================================================================
+
+entry-prestige-oval.png is retired and deleted. It depicted the Prestige Oval
+Lite, withdrawn in section 11, so the site was still showing a door that is no
+longer sold. All three uses now carry the client supplied Craftsman render,
+Craftsman-Medium-Oak-Golden-yellow.png, at the same 1122 x 1402 as the rest of
+the set:
+
+  1  Collection mega menu, feature image
+  2  The Signature Doors, first card
+  3  The Four Zones, Chapter II, North Central
+
+The signature card moved with its image. It read "3/4 Oval Lite" and linked to
+entry-3-4-oval-lite.html, a stand in put in place when the oval door was
+withdrawn. Left alone it would have captioned a Craftsman photograph with an
+oval door, so the card is now Craftsman, linking to entry-craftsman.html, with
+Vintage decorative glass and a Medium Oak finish. Both are on that page's own
+spec table.
+
+The fourth signature card, Impact Florida, was the only one in the rail still
+carrying a 16:9 photograph, assets/scene/coastal-16-9.jpg, among three portrait
+golden yellow renders. It now uses patio-gliding.png, the same render as Full
+Lite Gliding, so the rail reads as one set. coastal-16-9.jpg is retained: it is
+still in use on real-projects.html and why-composite.html.
+
+  Theme set is now three renders, all 1122 x 1402:
+    Craftsman-Medium-Oak-Golden-yellow.png   entry, Medium Oak, Vintage glass
+    entry-modern-narrow-lite.png             entry, Smooth White, Water Wave
+    patio-gliding.png                        patio, Smooth White
+
+  The Craftsman file keeps the name it was supplied under. It is the only
+  Title Case name in the folder; references match it exactly, which is what
+  matters on a case sensitive host.
 
 ==============================================================================
