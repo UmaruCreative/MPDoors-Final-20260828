@@ -1,0 +1,511 @@
+/* ══════════════════════════════════════════════════════════════
+   MP DOORS — HOMEPAGE REVISION (index-v2.html)
+   ──────────────────────────────────────────────────────────────
+   ADDITIVE ONLY. Loaded after styles.css and glass.css, and only
+   by index-v2.html. It adds the four component patterns the
+   revision needs and overrides nothing that the live index.html
+   depends on, so styles.css and glass.css stay byte-identical.
+
+     1. .hero__glass   a light-register glass pane for the hero
+     2. .split         large image beside copy (section 03)
+     3. .proof         three proof points, oversized numerals
+     4. .proj          the Real Projects editorial gallery
+     5. .faq           a quiet <details> accordion, no JavaScript
+
+   Everything else — buttons, eyebrows, type scale, .cat plates,
+   .cat__glass, .ch chapters, .facts, .form, .reveal, the header,
+   the footer — is inherited unchanged from the existing files.
+
+   Palette-driven throughout: every colour below resolves from the
+   colourway's :root, so this file is colourway-agnostic exactly
+   as glass.css is.
+   ══════════════════════════════════════════════════════════════ */
+
+:root{
+  /* --ink as channels. styles.css carries this as --cat-ink, but
+     scoped to .cat, and glass.css reads it from there. The new
+     sections sit outside .cat and need it at the document level.
+     Same value; if the colourway changes, both move together. */
+  --ink-rgb:28,22,8;
+
+  /* ── Light-register glass ────────────────────────────────────
+     glass.css tunes .cat__glass for a DARK photographic plate:
+     paper-coloured text, a milky tint, a strong bloom. These
+     panes sit on paper with ink text, so the same vocabulary is
+     re-registered — same 3px corner, same hairline, same amber
+     inner light — at roughly a third of the strength.
+
+     --gl-tint  how solid the pane is over what is behind it.
+     --gl-blur  frost strength.
+     --gl-edge  the hairline border, as ink opacity.
+     --gl-glow  master strength of the amber inner bloom. 0 kills
+                it and leaves a plain frosted pane. */
+  --gl-tint:.62;
+  --gl-blur:14px;
+  --gl-edge:.10;
+  --gl-glow:1;
+}
+
+/* The fixed header is ~70-90px tall, so an in-page anchor would
+   otherwise land with its heading tucked underneath the bar. */
+#collection,#why,#zones,#projects,#support,#faq,#buy{scroll-margin-top:96px}
+
+/* ── The pane ─────────────────────────────────────────────────
+   One class, used by the hero, the three proof points and the
+   featured project. Modifiers only change padding and weight. */
+.gpanel{
+  position:relative;
+  border-radius:3px;
+  background:
+    linear-gradient(145deg,
+      rgba(var(--paper-rgb),calc(var(--gl-tint) * 1.12)) 0%,
+      rgba(var(--paper-rgb),var(--gl-tint)) 46%,
+      rgba(var(--paper-rgb),calc(var(--gl-tint) * .82)) 100%);
+  backdrop-filter:blur(var(--gl-blur)) saturate(116%);
+  -webkit-backdrop-filter:blur(var(--gl-blur)) saturate(116%);
+  border:1px solid rgba(var(--ink-rgb),var(--gl-edge));
+  box-shadow:
+    /* the pane sitting off the page */
+    0 20px 52px rgba(var(--ink-rgb),.09),
+    /* a lit top lip, so it has thickness */
+    inset 0 1px 0 rgba(255,255,255,.55),
+    /* amber pooling inward from the edge — the one detail that
+       ties this back to .cat__glass rather than a plain card */
+    inset 0 0 clamp(24px,3vw,42px) rgba(var(--glow-rgb),calc(var(--gl-glow) * .10));
+}
+
+/* Where backdrop-filter is unavailable the tint alone has to hold
+   the copy off the photograph, so lean on it harder. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .gpanel{
+    background:linear-gradient(145deg,
+      rgba(var(--paper-rgb),.93) 0%,
+      rgba(var(--paper-rgb),.86) 100%);
+  }
+}
+
+
+/* ══ 01 · HERO ═════════════════════════════════════════════════
+   The existing .hero, .hero__img wash, .hero__h and .scroll all
+   carry over untouched. What is added is the pane the copy sits
+   in, a second product CTA, and the quiet certification line. */
+
+/* The pane has to be wide enough that the headline still breaks
+   where the copy intends it to — "Weather changes." / "Your door
+   should not." — rather than wherever the box runs out. Measured
+   in Cormorant Garamond, the longer of the two lines runs about
+   7.1x the font size, so the pane's content width and the h1 cap
+   below are set as a pair. Move one and re-check the other. */
+.hero__glass{
+  padding:clamp(34px,4vw,58px) clamp(28px,4vw,56px) clamp(38px,4.2vw,60px);
+  max-width:min(100%,960px);
+}
+/* 116px x 7.1 = 824px, inside the 848px the pane gives at its
+   widest. styles.css's 124px cap would overflow it. */
+.hero--v2 .hero__h{font-size:clamp(46px,8.4vw,116px)}
+/* The pane already holds the copy off the photograph, so the wash
+   underneath it can come back a little and let the door read. */
+.hero--v2 .hero__img::after{
+  background:
+    linear-gradient(100deg,rgba(var(--paper-rgb),0.72) 0%,rgba(var(--paper-rgb),0.56) 34%,rgba(var(--paper-rgb),0.22) 58%,rgba(var(--paper-rgb),0.06) 100%),
+    /* the top band is the scrim the transparent header sits on */
+    linear-gradient(to bottom,rgba(var(--paper-rgb),0.44),rgba(var(--paper-rgb),0.18) 14%,rgba(var(--paper-rgb),0) 32%,rgba(var(--paper-rgb),0.28));
+}
+.hero--v2 .hero__h{margin-bottom:.34em}
+.hero--v2 .hero__sub{max-width:44ch}
+
+/* The certification line. Deliberately the quietest thing in the
+   hero — the brief asks for the headline to dominate and the
+   technical proof to sit underneath it. */
+.hero__proof{
+  margin-top:clamp(20px,2.2vw,30px);
+  padding-top:clamp(18px,2vw,26px);
+  border-top:1px solid rgba(var(--ink-rgb),.14);
+  font-size:clamp(10.5px,.82vw,12px);
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  font-weight:600;
+  color:var(--muted);
+  max-width:46ch;
+  line-height:1.9;
+}
+.hero__proof strong{color:var(--accent);font-weight:700}
+
+/* Two product buttons plus the retail link. The second button is
+   the outline .btn at a lighter weight so the pair still reads as
+   one primary and one alternative, not two equal shouts. */
+.btn--ghost{border-color:rgba(var(--ink-rgb),.34)}
+.btn--ghost:hover,.btn--ghost:focus-visible{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+@media (max-width:720px){
+  .hero__glass{padding:clamp(26px,6vw,36px) clamp(22px,5.5vw,30px) clamp(30px,6vw,40px)}
+  /* Re-declared, not inherited: the rule above outranks styles.css's
+     own mobile cap, so the phone size has to be restated here. Same
+     7.1x fit test against the narrower pane. */
+  .hero--v2 .hero__h{font-size:clamp(34px,10vw,50px)}
+  /* The pane restores contrast on mobile, so the ink overrides
+     styles.css applies to bare hero text are no longer needed —
+     but they are harmless and stay, for one less override. */
+  /* The top stop is heavier than the ones below it on purpose: the
+     header is transparent until the page scrolls, and the brand mark
+     sits over the brightest part of this render. The middle can stay
+     light because the pane, not the wash, carries the copy. */
+  .hero--v2 .hero__img::after{
+    background:
+      linear-gradient(to bottom,
+        rgba(var(--paper-rgb),0.30) 0%,
+        rgba(var(--paper-rgb),0.20) 12%,
+        rgba(var(--paper-rgb),0.16) 22%,
+        rgba(var(--paper-rgb),0.26) 38%,
+        rgba(var(--paper-rgb),0.26) 74%,
+        rgba(var(--paper-rgb),0.12) 92%,
+        rgba(var(--paper-rgb),0.06) 100%);
+  }
+  .hero--v2 .hero__cta .btn{width:100%}
+}
+
+
+/* ══ 02 · COLLECTION ═══════════════════════════════════════════
+   The two full-bleed .cat plates and their .cat__glass panes are
+   inherited wholesale. Only the section header gains an intro. */
+
+/* .cat__hd is already inside .wrap, so the intro only needs its
+   own measure — re-adding .wrap--narrow would double the gutter. */
+.cat__intro{
+  max-width:840px;margin:1.4em auto 0;
+}
+.cat__intro .lede{margin-top:0}
+.cat__intro .body{margin-top:1.4em}
+
+/* The Entry plate now carries two buttons and the Patio plate
+   three, so the widest row is three-up rather than four. */
+.cat__blk--entry .cat__bg img{object-position:58% 52%}
+.cat__blk--patio .cat__bg img{object-position:52% 46%}
+
+
+/* ══ 03 · WHY MP DOORS — image beside copy ═════════════════════
+   A single large architectural image set against the argument,
+   then the three proof points across the full measure below it.
+   Light and spacious, as the brief asks: no tinted band. */
+
+.why{padding:var(--sec) 0}
+
+.split{
+  display:grid;
+  grid-template-columns:.95fr 1fr;
+  gap:clamp(34px,5.5vw,88px);
+  align-items:center;
+}
+.split__media{
+  position:relative;overflow:hidden;
+  background:var(--paper-3);
+  min-height:clamp(420px,48vw,640px);
+}
+.split__media img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+  object-position:50% 40%;
+}
+.split__txt .body{max-width:54ch}
+
+/* Three proof points. The numerals borrow .ch__num's role — a
+   large, quiet index that sits behind the fact rather than a
+   decorative graphic — but in accent at low opacity, since these
+   sit on paper rather than over a photograph. */
+.proof{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(18px,2.2vw,32px);
+  margin-top:clamp(56px,7vw,110px);
+}
+.proof__i{
+  padding:clamp(30px,3.2vw,46px) clamp(24px,2.6vw,38px) clamp(34px,3.4vw,50px);
+}
+/* In flow above the heading rather than set behind it. Watermarking
+   a numeral across the title works over a photograph, as .ch__num
+   does, but over body-weight text it costs legibility for nothing —
+   and the longest heading here runs straight through it. */
+.proof__num{
+  display:block;
+  font-size:clamp(50px,4.8vw,74px);line-height:1;
+  font-weight:300;letter-spacing:-.03em;
+  color:var(--accent);opacity:.32;
+  margin-bottom:.16em;
+  user-select:none;
+}
+.proof__h{
+  font-size:clamp(20px,1.8vw,25px);
+  font-weight:400;line-height:1.18;
+  margin-bottom:.2em;
+}
+.proof__i .body{margin-top:1.1em;font-size:16.5px;max-width:34ch}
+.why__cta{margin-top:clamp(44px,5vw,72px);text-align:center}
+.why__cta .arrow{margin-top:0}
+
+@media (max-width:1000px){
+  .split{grid-template-columns:1fr;gap:34px}
+  .split__media{min-height:clamp(320px,56vw,480px)}
+  .proof{grid-template-columns:1fr;gap:0}
+  .proof__i{border-top:1px solid var(--rule)}
+  .proof__i:last-child{border-bottom:1px solid var(--rule)}
+}
+
+
+/* ══ 04 · FOUR CLIMATE ZONES ═══════════════════════════════════
+   The .ch chapter rhythm, the alternating .ch--flip placement and
+   the roman .ch__num are all inherited. The copy is cut to one
+   line of argument plus the certification fact, so the chapters
+   can run shorter without leaving the media column stranded. */
+
+.ch--tight{padding:clamp(34px,4.4vw,66px) 0}
+.ch--tight .ch__media{min-height:clamp(340px,38vw,520px)}
+.ch--tight .ch__txt .body{margin-top:1.2em}
+.ch--tight .facts{margin-top:clamp(22px,2.6vw,34px)}
+
+.zones__cta{
+  margin-top:clamp(44px,5vw,78px);
+  text-align:center;
+}
+.zones__cta .arrow{margin-top:0}
+
+@media (max-width:720px){
+  .ch--tight .ch__media{min-height:clamp(280px,58vw,400px)}
+}
+
+
+/* ══ 05 · REAL PROJECTS ════════════════════════════════════════
+   Photography led. One featured frame carrying the glass pane and
+   the section's single primary action, then a quiet strip of
+   supporting images underneath with short captions. */
+
+.proj{padding:var(--sec) 0}
+.proj__hd{margin-bottom:clamp(44px,5vw,76px)}
+
+.proj__feat{
+  position:relative;
+  display:grid;place-items:center;
+  min-height:clamp(430px,48vw,620px);
+  overflow:hidden;
+  text-align:center;
+}
+.proj__bg{position:absolute;inset:0;z-index:0}
+.proj__bg img{
+  width:100%;height:100%;object-fit:cover;object-position:50% 52%;
+  transition:transform 1.2s cubic-bezier(.2,.7,.3,1);
+}
+.proj__feat:hover .proj__bg img{transform:scale(1.03)}
+/* A light wash, not the .cat plates' dark scrim: these panes are
+   light-register, so the photograph is lifted toward paper rather
+   than pushed toward ink. */
+.proj__bg::after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(110% 74% at 50% 50%,rgba(var(--paper-rgb),.30) 0%,rgba(var(--paper-rgb),.16) 52%,rgba(var(--paper-rgb),0) 100%),
+    linear-gradient(to bottom,rgba(var(--paper-rgb),.22),rgba(var(--paper-rgb),.06) 40%,rgba(var(--paper-rgb),.24));
+}
+.proj__in{
+  position:relative;z-index:1;width:100%;
+  padding:clamp(40px,5vw,72px) var(--gut);
+  display:grid;place-items:center;
+}
+.proj__glass{
+  padding:clamp(34px,4vw,54px) clamp(28px,4vw,56px);
+  width:min(100%,620px);
+}
+.proj__glass .body{margin-inline:auto}
+.proj__cta{
+  display:flex;flex-wrap:wrap;gap:16px 22px;
+  justify-content:center;align-items:center;
+  margin-top:clamp(28px,3.2vw,42px);
+}
+
+/* Supporting images. Captions are the verified gallery captions
+   from real-projects.html — setting, zone, style and finish, and
+   nothing that is not already published there. */
+.proj__grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(14px,1.8vw,26px);
+  margin-top:clamp(28px,3.2vw,48px);
+}
+.proj__i{display:block}
+/* These are <span>s inside an <a>, so each needs an explicit box —
+   inline elements ignore aspect-ratio and vertical margins. */
+.proj__img{
+  display:block;
+  position:relative;overflow:hidden;
+  background:var(--paper-3);aspect-ratio:4/3;
+}
+.proj__img img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .8s cubic-bezier(.2,.7,.3,1);
+}
+.proj__i:hover .proj__img img{transform:scale(1.045)}
+.proj__cap{
+  display:block;
+  margin-top:1.1em;
+  font-size:15.5px;color:var(--ink-2);
+}
+.proj__meta{
+  display:block;
+  margin-top:.5em;
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.18em;
+  font-weight:600;color:var(--muted);
+}
+.proj__links{
+  display:flex;flex-wrap:wrap;gap:clamp(22px,3.4vw,52px);
+  justify-content:center;
+  margin-top:clamp(40px,4.6vw,70px);
+}
+.proj__links .arrow{margin-top:0}
+
+/* Two up at tablet, with the odd one out spanning rather than
+   being hidden — every project in the strip stays on the page at
+   every width. */
+@media (max-width:1000px){
+  .proj__grid{grid-template-columns:repeat(2,1fr)}
+  .proj__grid .proj__i:nth-child(3){grid-column:1 / -1}
+  .proj__grid .proj__i:nth-child(3) .proj__img{aspect-ratio:16/7}
+}
+@media (max-width:720px){
+  .proj__feat{min-height:clamp(380px,80vw,480px)}
+  .proj__glass{padding:clamp(28px,6.5vw,38px) clamp(22px,6vw,30px)}
+  .proj__grid{grid-template-columns:1fr;gap:26px}
+  .proj__grid .proj__i:nth-child(3) .proj__img{aspect-ratio:4/3}
+}
+
+
+/* ══ 06 · SUPPORT AND CONFIDENCE ═══════════════════════════════
+   Centred editorial, the three proof points in a plain hairline
+   grid — no glass here, so the treatment stays selective — and
+   the guide form carried over from the existing .guide section. */
+
+.sup{padding:var(--sec) 0;background:var(--paper-2)}
+.sup__grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;margin-top:clamp(50px,6vw,84px);
+}
+.sup__i{
+  padding:clamp(26px,2.8vw,42px) clamp(22px,2.4vw,36px);
+  border-left:1px solid var(--rule);
+  text-align:left;
+}
+.sup__i:last-child{border-right:1px solid var(--rule)}
+.sup__h{font-size:clamp(21px,1.9vw,27px);font-weight:400;margin-bottom:.1em}
+.sup__i .body{margin-top:1.1em;font-size:16.5px}
+.sup__cta{
+  display:flex;flex-wrap:wrap;gap:clamp(18px,2.4vw,34px);
+  justify-content:center;align-items:center;
+  margin-top:clamp(44px,5vw,72px);
+}
+
+/* The guide module sits inside this section rather than as its own
+   band, so it takes a hairline rule above it instead of a --sec of
+   padding — a utility module under the confidence message. */
+.sup__guide{
+  max-width:840px;
+  margin:clamp(56px,7vw,110px) auto 0;
+  padding-top:clamp(48px,5.6vw,86px);
+  border-top:1px solid var(--rule);
+}
+.sup__guide .h2{font-size:clamp(26px,3.2vw,40px)}
+
+@media (max-width:1000px){
+  .sup__grid{grid-template-columns:1fr}
+  .sup__i{border:0;border-top:1px solid var(--rule)}
+  .sup__i:last-child{border-right:0;border-bottom:1px solid var(--rule)}
+}
+
+
+/* ══ 07 · FAQ ══════════════════════════════════════════════════
+   Native <details>, so the accordion needs no JavaScript and
+   degrades to plain open text if CSS never lands. Hairline rules
+   and the page's own type — no card, no chevron icon font, just
+   a rotating rule-drawn cross. */
+
+.faq{padding:var(--sec) 0}
+.faq__hd{margin-bottom:clamp(40px,4.6vw,68px)}
+.faq__list{
+  max-width:840px;margin-inline:auto;
+  border-top:1px solid var(--rule);
+}
+.faq__i{border-bottom:1px solid var(--rule)}
+
+.faq__q{
+  display:flex;align-items:flex-start;gap:clamp(18px,2.4vw,34px);
+  justify-content:space-between;
+  padding:clamp(22px,2.4vw,32px) 0;
+  cursor:pointer;
+  list-style:none;
+  font-size:clamp(19px,1.7vw,24px);
+  font-weight:400;line-height:1.3;
+  transition:color .35s ease;
+}
+.faq__q::-webkit-details-marker{display:none}
+.faq__q:hover{color:var(--accent)}
+.faq__i[open] .faq__q{color:var(--accent)}
+
+/* The marker: two hairlines making a cross, the vertical one
+   folding away when the panel opens. Same rule vocabulary as
+   .rule and .facts, so nothing new is introduced. */
+.faq__mk{
+  position:relative;flex:0 0 auto;
+  width:15px;height:15px;margin-top:.42em;
+}
+.faq__mk::before,.faq__mk::after{
+  content:"";position:absolute;background:currentColor;
+  transition:transform .4s cubic-bezier(.2,.7,.3,1),opacity .3s ease;
+}
+.faq__mk::before{left:0;right:0;top:7px;height:1px}
+.faq__mk::after{top:0;bottom:0;left:7px;width:1px}
+.faq__i[open] .faq__mk::after{transform:scaleY(0);opacity:0}
+
+.faq__a{padding:0 0 clamp(26px,2.8vw,38px)}
+.faq__a .body{margin-top:0;max-width:64ch}
+.faq__a .body+.body{margin-top:1.1em}
+
+body:not(.no-motion) .faq__i[open] .faq__a{animation:faqIn .45s ease both}
+@keyframes faqIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+.faq__cta{margin-top:clamp(40px,4.6vw,68px);text-align:center}
+.faq__cta .arrow{margin-top:0}
+
+@media (prefers-reduced-motion:reduce){
+  .faq__mk::before,.faq__mk::after{transition:none}
+  .faq__i[open] .faq__a{animation:none}
+}
+
+
+/* ══ 08 · BUY ══════════════════════════════════════════════════
+   The existing .reach full-width photographic band, with the
+   certification line added under the copy and one secondary text
+   link beneath the button. No competing calls to action. */
+
+/* glass.css's crop programme pins .reach__img to `50% 92%` with
+   !important, because it was tuned for the vertically stratified
+   golden-yellow render. This band carries a 16:9 lifestyle
+   photograph instead, where the horizon sits mid-frame, so the
+   window has to be re-set at the same weight. */
+.buy .reach__img img{object-position:50% 56%!important;transform:scale(1.04)}
+
+.buy__proof{
+  margin-top:clamp(22px,2.4vw,32px);
+  font-size:clamp(10.5px,.82vw,12px);
+  text-transform:uppercase;letter-spacing:.2em;font-weight:600;
+  color:var(--muted);
+}
+.buy__back{margin-top:clamp(26px,3vw,40px)}
+.buy__back .lnk{border-bottom-color:rgba(var(--ink-rgb),.28)}
+
+
+/* ══ FOOTER ════════════════════════════════════════════════════
+   The existing footer, plus the three-line positioning statement
+   under the brand paragraph. */
+
+.ft__pos{
+  margin-top:1.9em;
+  font-size:clamp(17px,1.35vw,20px);
+  font-style:italic;font-weight:300;
+  line-height:1.5;color:var(--ink);
+}

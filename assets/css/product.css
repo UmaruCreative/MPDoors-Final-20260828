@@ -52,6 +52,7 @@
   transition: border-color .35s var(--ease);
 }
 .thumb img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+.thumb--photo img { object-fit: cover; padding: 0; }   /* lifestyle photographs fill the tile */
 .thumb::after {
   content: ""; position: absolute; inset: 0;
   border: 1px solid transparent; transition: border-color .35s var(--ease);
@@ -111,6 +112,7 @@
 .fin { display: inline-flex; align-items: center; gap: 12px; padding: 8px 14px 8px 8px; border: 1px solid var(--sumi); }
 .fin__dot { width: 26px; height: 26px; border-radius: 50%; background: #FFFFFF; border: 1px solid var(--line-washi); }
 .fin__name { font-size: var(--fs-small); }
+.fin__dot--woodgrain { background: #9A6B3F; }   /* woodgrain interior, white exterior */
 
 /* colour-swatch selector (entry doors: multiple finishes) */
 .swatchrow { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -129,6 +131,7 @@
 .dot-light-oak { background: #C79A62; }
 .dot-black     { background: #22262A; }
 .dot-walnut    { background: #4A3527; }
+.dot-latte     { background: #D8C4A8; }
 
 /* pending-data callout (entry pages, until official specs land) */
 .pending {
